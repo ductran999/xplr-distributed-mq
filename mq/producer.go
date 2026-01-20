@@ -9,7 +9,7 @@ type Message struct {
 }
 
 type Producer interface {
-	Publish(ctx context.Context, msg *Message) (partition int32, offset int64, err error)
+	Publish(ctx context.Context, msg *Message) (err error)
 
 	Close() error
 }

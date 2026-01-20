@@ -2,7 +2,10 @@ module xplr-distributed-mq
 
 go 1.25.1
 
-require github.com/IBM/sarama v1.46.3
+require (
+	github.com/IBM/sarama v1.46.3
+	github.com/segmentio/kafka-go v0.4.50
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

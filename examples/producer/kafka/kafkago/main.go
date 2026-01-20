@@ -4,19 +4,19 @@ import (
 	"context"
 	"log"
 	"xplr-distributed-mq/mq"
-	kafka "xplr-distributed-mq/mq/kafka/sarama"
+	kafka "xplr-distributed-mq/mq/kafka/kafkago"
 )
 
 func main() {
 	config := &kafka.Config{
 		Brokers:                []string{"localhost:29092"},
 		KafkaVersion:           "4.0.0.0",
-		MaxRetry:               1,
-		AllowAutoTopicCreation: true,
+		MaxRetry:               5,
 		EnableDebug:            true,
+		AllowAutoTopicCreation: true,
 	}
 
-	topic := "test-topic"
+	topic := "kafkago-topic"
 
 	producer, err := kafka.NewProducer(config)
 	if err != nil {
@@ -27,7 +27,7 @@ func main() {
 	msg := &mq.Message{
 		Topic: topic,
 		Key:   "user-1",
-		Value: []byte("hello kafka from sarama"),
+		Value: []byte("hello kafka from kafkago"),
 	}
 
 	if err := producer.Publish(context.Background(), msg); err != nil {

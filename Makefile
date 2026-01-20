@@ -26,3 +26,11 @@ kafka: ## Start demo
 .PHONY: cleanup
 cleanup: ## Cleanup demo
 	@docker compose down
+
+.PHONY: kafkago-p
+kafkago-p: ## producer impl with kafkago
+	go run ./examples/producer/kafka/kafkago/main.go
+
+.PHONY: sarama-p
+sarama-p: ## producer impl with sarama
+	go run ./examples/producer/kafka/sarama/main.go

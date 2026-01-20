@@ -14,18 +14,21 @@ type Config struct {
 	KafkaVersion string
 	MaxRetry     int
 
-	EnableDebug bool
+	AllowAutoTopicCreation bool
+	EnableDebug            bool
 }
 
 type saramaProducer struct {
 	producer sarama.SyncProducer
 }
 
-func NewProducer(conf Config) (mq.Producer, error) {
+func NewProducer(conf *Config) (mq.Producer, error) {
 	config := sarama.NewConfig()
 	config.Version = sarama.V4_0_0_0
 
 	config.Producer.Retry.Max = conf.MaxRetry
+	config.Metadata.AllowAutoTopicCreation = conf.AllowAutoTopicCreation
+
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	config.Producer.Return.Successes = true
 
@@ -41,19 +44,19 @@ func NewProducer(conf Config) (mq.Producer, error) {
 	return &saramaProducer{producer: producer}, nil
 }
 
-func (sp *saramaProducer) Publish(ctx context.Context, msg *mq.Message) (int32, int64, error) {
+func (sp *saramaProducer) Publish(ctx context.Context, msg *mq.Message) error {
 	m := &sarama.ProducerMessage{
 		Topic: msg.Topic,
 		Key:   sarama.StringEncoder(msg.Key),
 		Value: sarama.StringEncoder(msg.Value),
 	}
 
-	partition, offset, err := sp.producer.SendMessage(m)
+	_, _, err := sp.producer.SendMessage(m)
 	if err != nil {
-		return 0, 0, err
+		return err
 	}
 
-	return partition, offset, nil
+	return nil
 }
 
 func (p *saramaProducer) Close() error {
