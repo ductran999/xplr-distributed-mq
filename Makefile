@@ -21,7 +21,10 @@ lint: ## Run linters
 
 .PHONY: kafka
 kafka: ## Start demo
-	@docker compose up -d
+	@docker compose up -d broker kafka-ui
+
+rabbitmq: ## Start rabbitmq
+	@docker compose up -d rabbitmq
 
 .PHONY: cleanup
 cleanup: ## Cleanup demo
@@ -38,3 +41,7 @@ sarama-p: ## producer impl with sarama
 .PHONY: franzgo-p
 franzgo-p: ## producer impl with franzgo-p
 	go run ./examples/producer/kafka/franzgo/main.go
+
+.PHONY: confluent-p
+confluent-p: ## producer impl with confluent-p
+	CGO_ENABLED=1 go run ./examples/producer/kafka/confluent/main.go
