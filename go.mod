@@ -4,6 +4,7 @@ go 1.25.1
 
 require (
 	github.com/IBM/sarama v1.46.3
+	github.com/confluentinc/confluent-kafka-go/v2 v2.13.0
 	github.com/segmentio/kafka-go v0.4.50
 	github.com/twmb/franz-go v1.20.6
 )

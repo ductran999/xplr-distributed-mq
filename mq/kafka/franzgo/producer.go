@@ -18,7 +18,7 @@ type Config struct {
 	EnableDebug            bool
 }
 
-type kafkaGoProducer struct {
+type franzGoProducer struct {
 	conf     *Config
 	producer *kgo.Client
 }
@@ -53,13 +53,13 @@ func NewProducer(conf *Config) (mq.Producer, error) {
 		return nil, err
 	}
 
-	return &kafkaGoProducer{
+	return &franzGoProducer{
 		conf:     conf,
 		producer: cl,
 	}, nil
 }
 
-func (p *kafkaGoProducer) Publish(ctx context.Context, msg *mq.Message) error {
+func (p *franzGoProducer) Publish(ctx context.Context, msg *mq.Message) error {
 	record := &kgo.Record{
 		Topic: msg.Topic,
 		Key:   []byte(msg.Key),
@@ -73,7 +73,7 @@ func (p *kafkaGoProducer) Publish(ctx context.Context, msg *mq.Message) error {
 	return nil
 }
 
-func (p *kafkaGoProducer) Close() error {
+func (p *franzGoProducer) Close() error {
 	p.producer.Close()
 
 	return nil
