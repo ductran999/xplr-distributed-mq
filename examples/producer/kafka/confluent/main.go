@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"log"
-	"xplr-distributed-mq/mq"
-	kafka "xplr-distributed-mq/mq/kafka/confluent"
+	"xplr-distributed-mq/evtstream"
+	kafka "xplr-distributed-mq/evtstream/kafka/confluent"
 )
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 	}
 	defer producer.Close() //nolint
 
-	msg := &mq.Message{
+	msg := &evtstream.Message{
 		Topic: topic,
 		Key:   "user",
 		Value: []byte("hello kafka from confluent"),
