@@ -34,3 +34,7 @@ kafkago-p: ## producer impl with kafkago
 .PHONY: sarama-p
 sarama-p: ## producer impl with sarama
 	go run ./examples/producer/kafka/sarama/main.go
+
+.PHONY: franzgo-p
+franzgo-p: ## producer impl with franzgo-p
+	go run ./examples/producer/kafka/franzgo/main.go

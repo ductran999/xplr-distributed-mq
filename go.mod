@@ -5,6 +5,7 @@ go 1.25.1
 require (
 	github.com/IBM/sarama v1.46.3
 	github.com/segmentio/kafka-go v0.4.50
+	github.com/twmb/franz-go v1.20.6
 )
 
 require (
@@ -19,9 +20,10 @@ require (
 	github.com/jcmturner/gofork v1.7.6 // indirect
 	github.com/jcmturner/gokrb5/v8 v8.4.4 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
-	github.com/klauspost/compress v1.18.1 // indirect
+	github.com/klauspost/compress v1.18.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/net v0.46.0 // indirect
+	github.com/twmb/franz-go/pkg/kmsg v1.12.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
 )
