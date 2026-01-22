@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-	"xplr-distributed-mq/mq"
+	"xplr-distributed-mq/evtstream"
 
 	kafkago "github.com/segmentio/kafka-go"
 )
@@ -25,7 +25,7 @@ type kafkaGoProducer struct {
 	producer *kafkago.Writer
 }
 
-func NewProducer(conf *Config) (mq.Producer, error) {
+func NewProducer(conf *Config) (evtstream.Producer, error) {
 	w := &kafkago.Writer{
 		Addr:         kafkago.TCP(conf.Brokers...),
 		MaxAttempts:  conf.MaxRetry,
@@ -46,7 +46,7 @@ func NewProducer(conf *Config) (mq.Producer, error) {
 	}, nil
 }
 
-func (p *kafkaGoProducer) Publish(ctx context.Context, msg *mq.Message) error {
+func (p *kafkaGoProducer) Publish(ctx context.Context, msg *evtstream.Message) error {
 	m := kafkago.Message{
 		Topic: msg.Topic,
 		Key:   []byte(msg.Key),

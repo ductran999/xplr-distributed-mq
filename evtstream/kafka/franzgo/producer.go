@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 	"time"
-	"xplr-distributed-mq/mq"
+	"xplr-distributed-mq/evtstream"
 
 	"github.com/twmb/franz-go/pkg/kgo"
 )
@@ -23,7 +23,7 @@ type franzGoProducer struct {
 	producer *kgo.Client
 }
 
-func NewProducer(conf *Config) (mq.Producer, error) {
+func NewProducer(conf *Config) (evtstream.Producer, error) {
 	opts := []kgo.Opt{
 		kgo.SeedBrokers(conf.Brokers...),
 		kgo.RequiredAcks(kgo.AllISRAcks()),
@@ -59,7 +59,7 @@ func NewProducer(conf *Config) (mq.Producer, error) {
 	}, nil
 }
 
-func (p *franzGoProducer) Publish(ctx context.Context, msg *mq.Message) error {
+func (p *franzGoProducer) Publish(ctx context.Context, msg *evtstream.Message) error {
 	record := &kgo.Record{
 		Topic: msg.Topic,
 		Key:   []byte(msg.Key),

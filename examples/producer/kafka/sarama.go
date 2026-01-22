@@ -1,22 +1,22 @@
-package main
+package kafka
 
 import (
 	"context"
 	"log"
-	"xplr-distributed-mq/mq"
-	kafka "xplr-distributed-mq/mq/kafka/confluent"
+	"xplr-distributed-mq/evtstream"
+	kafka "xplr-distributed-mq/evtstream/kafka/sarama"
 )
 
-func main() {
+func RunSaramaExample() {
 	config := &kafka.Config{
 		Brokers:                []string{"localhost:29092"},
 		KafkaVersion:           "4.0.0.0",
-		MaxRetry:               3,
+		MaxRetry:               1,
 		AllowAutoTopicCreation: true,
 		EnableDebug:            true,
 	}
 
-	topic := "confluent-kafka-go-topic"
+	topic := "test-topic"
 
 	producer, err := kafka.NewProducer(config)
 	if err != nil {
@@ -24,10 +24,10 @@ func main() {
 	}
 	defer producer.Close() //nolint
 
-	msg := &mq.Message{
+	msg := &evtstream.Message{
 		Topic: topic,
-		Key:   "user",
-		Value: []byte("hello kafka from confluent"),
+		Key:   "user-1",
+		Value: []byte("hello kafka from sarama"),
 	}
 
 	if err := producer.Publish(context.Background(), msg); err != nil {

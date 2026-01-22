@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"xplr-distributed-mq/mq"
+	"xplr-distributed-mq/evtstream"
 
 	confluent "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
@@ -23,7 +23,7 @@ type confluentKafka struct {
 	producer *confluent.Producer
 }
 
-func NewProducer(cfg *Config) (mq.Producer, error) {
+func NewProducer(cfg *Config) (evtstream.Producer, error) {
 	if len(cfg.Brokers) == 0 {
 		return nil, errors.New("kafka brokers is empty")
 	}
@@ -48,7 +48,7 @@ func NewProducer(cfg *Config) (mq.Producer, error) {
 	}, nil
 }
 
-func (p *confluentKafka) Publish(ctx context.Context, msg *mq.Message) error {
+func (p *confluentKafka) Publish(ctx context.Context, msg *evtstream.Message) error {
 	go func() {
 		for e := range p.producer.Events() {
 			switch ev := e.(type) {

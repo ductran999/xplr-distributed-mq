@@ -1,13 +1,13 @@
-package main
+package kafka
 
 import (
 	"context"
 	"log"
-	"xplr-distributed-mq/mq"
-	kafka "xplr-distributed-mq/mq/kafka/sarama"
+	"xplr-distributed-mq/evtstream"
+	kafka "xplr-distributed-mq/evtstream/kafka/franzgo"
 )
 
-func main() {
+func RunFranzGoExample() {
 	config := &kafka.Config{
 		Brokers:                []string{"localhost:29092"},
 		KafkaVersion:           "4.0.0.0",
@@ -16,7 +16,7 @@ func main() {
 		EnableDebug:            true,
 	}
 
-	topic := "test-topic"
+	topic := "franz-go-topic"
 
 	producer, err := kafka.NewProducer(config)
 	if err != nil {
@@ -24,10 +24,10 @@ func main() {
 	}
 	defer producer.Close() //nolint
 
-	msg := &mq.Message{
+	msg := &evtstream.Message{
 		Topic: topic,
-		Key:   "user-1",
-		Value: []byte("hello kafka from sarama"),
+		Key:   "user",
+		Value: []byte("hello kafka from franzgo"),
 	}
 
 	if err := producer.Publish(context.Background(), msg); err != nil {

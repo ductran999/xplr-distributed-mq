@@ -1,13 +1,13 @@
-package main
+package kafka
 
 import (
 	"context"
 	"log"
-	"xplr-distributed-mq/mq"
-	kafka "xplr-distributed-mq/mq/kafka/kafkago"
+	"xplr-distributed-mq/evtstream"
+	kafka "xplr-distributed-mq/evtstream/kafka/kafkago"
 )
 
-func main() {
+func RunKafkaGoExample() {
 	config := &kafka.Config{
 		Brokers:                []string{"localhost:29092"},
 		KafkaVersion:           "4.0.0.0",
@@ -24,7 +24,7 @@ func main() {
 	}
 	defer producer.Close() //nolint
 
-	msg := &mq.Message{
+	msg := &evtstream.Message{
 		Topic: topic,
 		Key:   "user-1",
 		Value: []byte("hello kafka from kafkago"),

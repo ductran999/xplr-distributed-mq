@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
-	"xplr-distributed-mq/mq"
+	"xplr-distributed-mq/evtstream"
 
 	"github.com/IBM/sarama"
 )
@@ -22,7 +22,7 @@ type saramaProducer struct {
 	producer sarama.SyncProducer
 }
 
-func NewProducer(conf *Config) (mq.Producer, error) {
+func NewProducer(conf *Config) (evtstream.Producer, error) {
 	config := sarama.NewConfig()
 	config.Version = sarama.V4_0_0_0
 
@@ -44,7 +44,7 @@ func NewProducer(conf *Config) (mq.Producer, error) {
 	return &saramaProducer{producer: producer}, nil
 }
 
-func (sp *saramaProducer) Publish(ctx context.Context, msg *mq.Message) error {
+func (sp *saramaProducer) Publish(ctx context.Context, msg *evtstream.Message) error {
 	m := &sarama.ProducerMessage{
 		Topic: msg.Topic,
 		Key:   sarama.StringEncoder(msg.Key),
