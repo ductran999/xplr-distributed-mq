@@ -1,22 +1,22 @@
-package main
+package kafka
 
 import (
 	"context"
 	"log"
 	"xplr-distributed-mq/evtstream"
-	kafka "xplr-distributed-mq/evtstream/kafka/confluent"
+	kafka "xplr-distributed-mq/evtstream/kafka/franzgo"
 )
 
-func main() {
+func RunFranzGoExample() {
 	config := &kafka.Config{
 		Brokers:                []string{"localhost:29092"},
 		KafkaVersion:           "4.0.0.0",
-		MaxRetry:               3,
+		MaxRetry:               1,
 		AllowAutoTopicCreation: true,
 		EnableDebug:            true,
 	}
 
-	topic := "confluent-kafka-go-topic"
+	topic := "franz-go-topic"
 
 	producer, err := kafka.NewProducer(config)
 	if err != nil {
@@ -27,7 +27,7 @@ func main() {
 	msg := &evtstream.Message{
 		Topic: topic,
 		Key:   "user",
-		Value: []byte("hello kafka from confluent"),
+		Value: []byte("hello kafka from franzgo"),
 	}
 
 	if err := producer.Publish(context.Background(), msg); err != nil {
