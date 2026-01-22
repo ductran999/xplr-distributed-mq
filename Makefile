@@ -30,18 +30,17 @@ rabbitmq: ## Start rabbitmq
 cleanup: ## Cleanup demo
 	@docker compose down
 
-.PHONY: kafkago-p
-kafkago-p: ## producer impl with kafkago
-	go run ./examples/producer/kafka/kafkago/main.go
+APP_NAME := xplr-distributed-mq
+MODULE   := xplr-distributed-mq
 
-.PHONY: sarama-p
-sarama-p: ## producer impl with sarama
-	go run ./examples/producer/kafka/sarama/main.go
+VERSION   ?= 1.0.0
+GIT_COMMIT := $(shell git rev-parse --short HEAD)
+BUILD_DATE := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 
-.PHONY: franzgo-p
-franzgo-p: ## producer impl with franzgo-p
-	go run ./examples/producer/kafka/franzgo/main.go
-
-.PHONY: confluent-p
-confluent-p: ## producer impl with confluent-p
-	CGO_ENABLED=1 go run ./examples/producer/kafka/confluent/main.go
+build:
+	go build \
+		-ldflags "\
+		-X $(MODULE)/cmd.Version=$(VERSION) \
+		-X $(MODULE)/cmd.GitCommit=$(GIT_COMMIT) \
+		-X $(MODULE)/cmd.BuildDate=$(BUILD_DATE)" \
+		-o xplr-mq
